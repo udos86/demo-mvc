@@ -1,7 +1,5 @@
-(function () {
+(function (module) {
     "use strict";
-
-    var module = angular.module("app.module.main");
 
     module.controller("noteViewController", ["$scope", "$routeParams", "noteModel", function ($scope, $routeParams, model) {
 
@@ -9,4 +7,5 @@
 
         $scope.$emit("onNoteSelected", $scope.note);
     }]);
-}());
+
+}(angular.module("app.module.main")));

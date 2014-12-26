@@ -1,7 +1,5 @@
-(function () {
+(function (module) {
     "use strict";
-
-    var module = angular.module("app.module.main", ["ngRoute"]);
 
     module.constant("DEBUG", true);
     module.constant("storageKey", "de.udos.notes");
@@ -27,4 +25,5 @@
             $log.log("Module Main is running...");
         }
     }]);
-}());
+
+}(angular.module("app.module.main", ["ngRoute"])));

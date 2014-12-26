@@ -1,7 +1,5 @@
-(function () {
+(function (module) {
     "use strict";
-
-    var module = angular.module("app.module.main");
 
     function Note(title, text) {
 
@@ -73,6 +71,7 @@
             }
 
             $("#" + popId).popup( "open", {
+
                 positionTo: "window",
                 transition: "pop"
             });
@@ -84,4 +83,5 @@
         });
 
     }]);
-}());
+
+}(angular.module("app.module.main")));
