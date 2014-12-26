@@ -2,6 +2,7 @@
   "name": "demo-mvc",
   "version": "1.0.0",
   "description": "",
+  "author": "Udo Schoefer",
   "main": "index.html",
   "directories": {
     "test": "test"
@@ -20,6 +21,5 @@
     "karma": "~0.12.24",
     "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "~0.1.4"
-  },
-  "author": "Udo Schoefer"
+  }
 }
