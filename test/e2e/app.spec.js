@@ -1,4 +1,4 @@
-(function (ns){
+(function (){
     "use strict";
 
     describe("a simple end-to-end test suite for notes app", function () {
