@@ -1,4 +1,4 @@
 demo-mvc
 ========
 
-Sample project for mvc workshop
+Sample project for workshop "Mobile Web Development II - Modern Front End Programming"
