@@ -4,7 +4,7 @@
     describe("a simple end-to-end test suite for notes app", function () {
 
         beforeEach(function() {
-            browser.get("http://localhost:63342/v6ng/index.html#/");
+            browser.get("http://localhost:63342/demo-mvc/index.html#/");
         });
 
         it("should have a title", function() {
