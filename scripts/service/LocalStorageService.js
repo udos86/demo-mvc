@@ -1,7 +1,5 @@
-(function () {
+(function (module) {
     "use strict";
-
-    var module = angular.module("app.module.main");
 
     module.factory("localStorage", [function () {
 
@@ -27,4 +25,5 @@
             }
         }
     }]);
-}());
+
+}(angular.module("app.module.main")));
