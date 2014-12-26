@@ -23,7 +23,7 @@
             write: function (key, data) {
                 set(key, data);
             }
-        }
+        };
     }]);
 
 }(angular.module("app.module.main")));
