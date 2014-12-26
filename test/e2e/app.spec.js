@@ -13,7 +13,7 @@
 
         it("should have a title", function() {
             var list = element.all(by.css('#listArchive li'));
-            expect(list.count()).toBe(1);
+            expect(list.count()).toBe(0);
         });
     });
 
