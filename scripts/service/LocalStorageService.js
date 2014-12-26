@@ -5,11 +5,11 @@
 
         var localStorage = window.localStorage;
 
-        function setObject (key, obj) {
+        function set (key, obj) {
             localStorage.setItem(key, angular.toJson(obj));
         }
 
-        function getObject (key) {
+        function get (key) {
             var json = localStorage.getItem(key);
             return json && angular.fromJson(json);
         }
@@ -17,11 +17,11 @@
         return {
 
             read: function (key) {
-                return getObject(key) || [];
+                return get(key) || [];
             },
 
             write: function (key, data) {
-                setObject(key, data);
+                set(key, data);
             }
         }
     }]);
