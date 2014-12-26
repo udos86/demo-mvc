@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+
+<html ng-app="app.module.main">
+    
+    <head>
+        
+        <title>Notiz App</title>
+
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="lib/jquery.mobile-1.4.4.min.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+
+        <script src="lib/jquery-1.11.1.min.js"></script>
+
+        <script>
+
+            /* Deaktiveren der jQuery Mobile History Funktion */
+            $(document).on( "mobileinit", function() {
+
+                //$.mobile.ajaxEnabled = false;
+                $.mobile.hashListeningEnabled = false;
+                $.mobile.pushStateEnabled = false;
+            });
+
+        </script>
+
+        <script src="lib/jquery.mobile-1.4.4.min.js"></script>
+
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-route/angular-route.min.js"></script>
+
+        <script src="scripts/app.js"></script>
+        <script src="scripts/service/LocalStorageService.js"></script>
+        <script src="scripts/model/NoteModel.js"></script>
+        <script src="scripts/controller/MainPageController.js"></script>
+        <script src="scripts/controller/NoteViewController.js"></script>
+
+    </head>
+    
+    <body ng-controller="mainPageController">
+
+        <!-- MAIN PAGE -->
+        <div data-role="page" data-title="Notiz App" id="main">
+        	
+            <div data-role="header" data-position="fixed" data-theme="a">
+                
+                <a href="#panelArchive" id="btnOpenArchive" class="ui-btn ui-btn-left ui-corner-all ui-btn-icon-left ui-icon-bars">Archiv</a>
+                
+                <h1>Notiz App</h1>
+                
+				<div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+					
+				    <a data-rel="popup" data-transition="pop" id="btnNoteForm" class="ui-btn ui-btn-icon-left ui-icon-plus" ng-click="openPopup($event)">Neue Notiz</a>
+				    <a data-rel="popup" data-transition="pop" id="btnDeleteNote" class="ui-btn ui-btn-icon-right ui-icon-delete" ng-click="openPopup($event)">Notiz löschen</a>
+				
+				</div>
+            
+            </div>
+            
+            <div id="mainContent" class="ui-content" role="main">
+
+                <div ng-view></div>
+                <!--
+                <p ng-bind-template="Titel: {{selectedNote.title}}"></p>
+                <p ng-bind-template="Datum: {{selectedNote.date | date:'medium'}}"></p>
+                <p ng-bind-template="Notiz: {{selectedNote.text}}"></p>
+                -->
+            </div>
+            
+            <div data-role="footer" data-position="fixed" data-theme="a">
+                
+                <h1>Footer</h1>
+            
+            </div>
+                     
+        	<div data-role="panel" data-position="left" data-theme="c" data-display="push" id="panelArchive">
+
+                <form class="ui-filterable">
+                    <input id="filterPanelList" data-type="search" placeholder="Suche Notiz">
+                </form>
+
+				<ul data-role="listview" data-filter="true" data-input="#filterPanelList" data-theme="a" id="listArchive">
+
+                    <li ng-repeat="note in data | orderBy:noteOrderField" ng-click="showNote(note)" ng-cloak>
+                        <a href="#/notes/{{note.date}}">{{note.title}}</a>
+                    </li>
+
+				</ul>
+        
+        	</div>
+
+            <!-- POPUP -->
+            <div data-role="popup" data-position-to="window" data-overlay-theme="a" id="popupNoteForm">
+
+                <div data-role="header">
+                    <h1>Neue Notiz</h1>
+                </div>
+                
+                <div class="ui-content" role="main">
+                
+                <p>Bitte tragen Sie hier Ihre neue Notiz ein:</p>
+
+                    <div class="ui-field-contain">
+                        <label for="noteFormTitle">Titel:</label>
+                        <input type="text" name="noteFormTitle" id="noteFormTitle" value="" placeholder="Titel" ng-model="noteFormTitle" />
+                    </div>
+                    
+                    <div class="ui-field-contain">
+                        <label for="noteFormText">Notiz:</label>
+                        <textarea name="noteFormText" id="noteFormText" placeholder="Notiz" ng-model="noteFormText"></textarea>
+                    </div>
+                    
+                    <a href="#" data-rel="back" id="btnCreateNote" class="ui-btn ui-btn-inline ui-corner-all ui-btn-icon-left ui-icon-check" ng-click="createNote()">Speichern</a>
+                    <a href="#" data-rel="back" class="ui-btn ui-btn-inline ui-corner-all ui-btn-icon-left ui-icon-delete">Abbrechen</a>
+
+                </div>
+                
+            </div>
+
+            <div data-role="popup" data-position-to="window" data-overlay-theme="a" id="popupNoteDelete">
+                
+                <div data-role="header">
+                    <h1>Notiz löschen</h1>
+                </div>
+                
+                <div class="ui-content" role="main">
+                
+                <p>Möchten Sie die Notiz wirklich löschen?</p>
+                    
+                    <a href="#" data-rel="back" id="btnDeleteNoteConfirm" class="ui-btn ui-btn-inline ui-corner-all ui-btn-icon-left ui-icon-check" ng-click="deleteNote()">Ja</a>
+                    <a href="#" data-rel="back" class="ui-btn ui-btn-inline ui-corner-all ui-btn-icon-left ui-icon-delete">Nein</a>
+
+                </div>
+                
+            </div>
+        	
+        </div>
+
+    </body>
+    
+</html> 
