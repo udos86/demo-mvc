@@ -1,19 +1,20 @@
 module.exports = function (grunt) {
+    "use strict";
 
     grunt.initConfig({
 
         pkg: grunt.file.readJSON("package.json"),
 
-	clean : {
-			
-		options: {
-			force: true
-		},
-		
-		remove: {
-			src: ["dist/"]
-		}			
-	},
+        clean: {
+
+            options: {
+                force: true
+            },
+
+            remove: {
+                src: ["dist/"]
+            }
+        },
 
         cssmin: {
 
