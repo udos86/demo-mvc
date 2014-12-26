@@ -1,7 +1,5 @@
-(function () {
+(function (module) {
     "use strict";
-
-    var module = angular.module("app.module.main");
 
     module.factory("noteModel", ["localStorage", "storageKey", function (localStorage, storageKey) {
 
@@ -50,5 +48,5 @@
             }
         };
     }]);
-    
-}());
+
+}(angular.module("app.module.main")));
