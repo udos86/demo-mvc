@@ -12,7 +12,7 @@ module.exports = function (grunt) {
             },
 
             remove: {
-                src: ["dist/**"]
+                src: ["dist/**/*"]
             }
         },
 
