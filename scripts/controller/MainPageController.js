@@ -1,14 +1,7 @@
 (function (module) {
     "use strict";
 
-    function Note(title, text) {
-
-        this.title = title || "";
-        this.text = text || "";
-        this.date = new Date().toJSON();
-    }
-
-    module.controller("MainPageController", ["$scope", "$route", "noteModel", function ($scope, $route, model) {
+    module.controller("MainPageController", ["$scope", "$route", "noteFactory", "noteModel", function ($scope, $route, Note, model) {
 
         $scope.data = model.getData();
 
@@ -23,7 +16,7 @@
         $scope.createNote = function () {
 
             var self = this,
-                note = new Note(self.noteFormTitle, self.noteFormText);
+                note = Note.create(self.noteFormTitle, self.noteFormText);
 
             self.data = model.add(note);
             $route.updateParams({"noteId": note.date});
@@ -45,19 +38,19 @@
             $("#panelArchive").panel("close");
 
             /*
-            var self = $scope; //this.$parent
+             var self = $scope; //this.$parent
 
-            if (note) {
-                self.selectedNote = note;
-            }
-            */
+             if (note) {
+             self.selectedNote = note;
+             }
+             */
         };
 
         $scope.openPopup = function ($event) {
 
             var popId;
 
-            switch ($event.currentTarget.id){
+            switch ($event.currentTarget.id) {
 
                 case "btnNoteForm":
                     popId = "popupNoteForm";
@@ -68,7 +61,7 @@
                     break;
             }
 
-            $("#" + popId).popup( "open", {
+            $("#" + popId).popup("open", {
 
                 positionTo: "window",
                 transition: "pop"
