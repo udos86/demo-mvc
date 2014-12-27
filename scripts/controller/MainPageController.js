@@ -26,8 +26,7 @@
                 note = new Note(self.noteFormTitle, self.noteFormText);
 
             self.data = model.add(note);
-
-            //$route.updateParams({"noteId": note.date});
+            $route.updateParams({"noteId": note.date});
         };
 
         $scope.deleteNote = function () {
