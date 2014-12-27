@@ -1,7 +1,6 @@
 (function (module) {
     "use strict";
 
-    module.constant("DEBUG", true);
     module.constant("storageKey", "de.udos.notes");
 
     module.config(["$routeProvider", function ($routeProvider) {
@@ -15,14 +14,14 @@
             });
     }]);
 
-    module.run(["$log", "DEBUG", function ($log, DEBUG) {
+    module.run(["$log", function ($log) {
 
         if (window.localStorage === undefined || window.localStorage === null) {
             throw "No local storage available.";
         }
 
         if (DEBUG) {
-            $log.log("Module Main is running...");
+            $log.debug("Module Main is running...");
         }
     }]);
 
