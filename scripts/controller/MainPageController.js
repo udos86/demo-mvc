@@ -8,7 +8,7 @@
         this.date = new Date().toJSON();
     }
 
-    module.controller("MainPageController", ["$scope", "$route", "$routeParams", "noteModel", function ($scope, $route, $routeParams, model) {
+    module.controller("MainPageController", ["$scope", "$route", "noteModel", function ($scope, $route, model) {
 
         $scope.data = model.getData();
 
@@ -33,7 +33,6 @@
         $scope.deleteNote = function () {
 
             var self = this;
-
 
             if ($scope.selectedNote) {
 

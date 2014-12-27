@@ -13,14 +13,19 @@
 
             getItem: function (field, value) {
 
-                var item = null;
+                var l = data.length,
+                    item = null,
+                    curr,
+                    i;
 
-                data.forEach(function (idx, curr) {
-                    
+                for (i = 0; i < l; i += 1) {
+                    curr = data[i];
+
                     if (curr[field] === value) {
                         item = curr;
+                        break;
                     }
-                });
+                }
 
                 return item;
             },
