@@ -7,7 +7,7 @@
     module.config(["$routeProvider", function ($routeProvider) {
 
         $routeProvider.when("/notes/:noteId", {
-                templateUrl: "templates/noteView.html",
+                templateUrl: "partials/noteView.html",
                 controller: "noteViewController"
             }).
             otherwise({

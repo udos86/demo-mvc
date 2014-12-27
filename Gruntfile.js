@@ -18,7 +18,7 @@ module.exports = function (grunt) {
 
         cssmin: {
 
-            minify: {
+            dist: {
 
                 files: [{
 
@@ -31,15 +31,36 @@ module.exports = function (grunt) {
             }
         },
 
+        concat: {
+
+            dist: {
+
+                src: ["scripts/module.js", "scripts/**/*.js"],
+                dest: "dist/scripts/app.js"
+            }
+        },
+
         uglify: {
 
-            minify: {
+            scripts: {
 
                 files: [{
 
                     expand: true,
                     cwd: "scripts/",
                     src: "**/*.js",
+                    dest: "scripts/",
+                    ext: ".min.js"
+                }]
+            },
+
+            dist: {
+
+                files: [{
+
+                    expand: true,
+                    cwd: "dist/scripts/",
+                    src: "*.js",
                     dest: "dist/scripts/",
                     ext: ".min.js"
                 }]
@@ -52,5 +73,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-uglify");
 
-    grunt.registerTask("default", ["clean", "cssmin", /*"concat",*/ "uglify"]);
+    grunt.registerTask("default", ["clean", "cssmin", "concat", "uglify:dist"]);
 };
