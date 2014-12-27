@@ -3,14 +3,21 @@
 
     module.factory("localStorage", [function () {
 
-        var localStorage = window.localStorage;
+        var storage;
+
+        if (window.localStorage) {
+            storage = window.localStorage;
+
+        } else {
+            throw "No local storage available.";
+        }
 
         function set (key, obj) {
-            localStorage.setItem(key, angular.toJson(obj));
+            storage.setItem(key, angular.toJson(obj));
         }
 
         function get (key) {
-            var json = localStorage.getItem(key);
+            var json = storage.getItem(key);
             return json && angular.fromJson(json);
         }
 
@@ -26,4 +33,4 @@
         };
     }]);
 
-}(angular.module("app.module.main")));
+}(angular.module("main")));

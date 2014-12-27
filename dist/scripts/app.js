@@ -3,11 +3,13 @@
 
     module.constant("storageKey", "de.udos.notes");
 
-    module.config(["$routeProvider", function ($routeProvider) {
+    module.config(["$logProvider", "$routeProvider", function ($logProvider, $routeProvider) {
+
+        $logProvider.debugEnabled(DEBUG); // DEBUG globally defined in uglify grunt task
 
         $routeProvider.when("/notes/:noteId", {
                 templateUrl: "partials/noteView.html",
-                controller: "noteViewController"
+                controller: "NoteViewController"
             }).
             otherwise({
                 redirectTo: "/"
@@ -16,16 +18,10 @@
 
     module.run(["$log", function ($log) {
 
-        if (window.localStorage === undefined || window.localStorage === null) {
-            throw "No local storage available.";
-        }
-
-        if (DEBUG) {
-            $log.debug("Module Main is running...");
-        }
+        $log.debug("Module Main is running...");
     }]);
 
-}(angular.module("app.module.main", ["ngRoute"])));
+}(angular.module("main", ["ngRoute"])));
 
 (function (module) {
     "use strict";
@@ -37,7 +33,7 @@
         this.date = new Date().toJSON();
     }
 
-    module.controller("mainPageController", ["$scope", "$route", "$routeParams", "noteModel", function ($scope, $route, $routeParams, model) {
+    module.controller("MainPageController", ["$scope", "$route", "$routeParams", "noteModel", function ($scope, $route, $routeParams, model) {
 
         $scope.data = model.getData();
 
@@ -113,44 +109,42 @@
 
     }]);
 
-}(angular.module("app.module.main")));
+}(angular.module("main")));
 
 (function (module) {
     "use strict";
 
-    module.controller("noteViewController", ["$scope", "$routeParams", "noteModel", function ($scope, $routeParams, model) {
+    module.controller("NoteViewController", ["$scope", "$routeParams", "noteModel", function ($scope, $routeParams, model) {
 
         $scope.note = model.getItem("date", $routeParams.noteId);
 
         $scope.$emit("onNoteSelected", $scope.note);
     }]);
 
-}(angular.module("app.module.main")));
+}(angular.module("main")));
 
 (function (module) {
     "use strict";
 
     module.factory("noteModel", ["localStorage", "storageKey", function (localStorage, storageKey) {
 
-        var self = this;
-
-        self.data = localStorage.read(storageKey);
+        var data = localStorage.read(storageKey);
 
         return {
 
             getData: function () {
-                return self.data.slice();
+                return data.slice();
             },
 
             getItem: function (field, value) {
 
-                var l = self.data.length,
+                var l = data.length,
                     item = null,
                     curr,
                     i;
 
                 for (i = 0; i < l; i += 1) {
-                    curr = self.data[i];
+                    curr = data[i];
 
                     if (curr[field] === value) {
                         item = curr;
@@ -162,37 +156,44 @@
 
             add: function (item) {
 
-                self.data.push(item);
-                localStorage.write(storageKey, self.data);
+                data.push(item);
+                localStorage.write(storageKey, data);
 
-                return self.data.slice();
+                return data.slice();
             },
 
             remove: function (item) {
 
-                self.data.splice(self.data.indexOf(item), 1);
-                localStorage.write(storageKey, self.data);
+                data.splice(data.indexOf(item), 1);
+                localStorage.write(storageKey, data);
 
-                return self.data.slice();
+                return data.slice();
             }
         };
     }]);
 
-}(angular.module("app.module.main")));
+}(angular.module("main")));
 
 (function (module) {
     "use strict";
 
     module.factory("localStorage", [function () {
 
-        var localStorage = window.localStorage;
+        var storage;
+
+        if (window.localStorage) {
+            storage = window.localStorage;
+
+        } else {
+            throw "No local storage available.";
+        }
 
         function set (key, obj) {
-            localStorage.setItem(key, angular.toJson(obj));
+            storage.setItem(key, angular.toJson(obj));
         }
 
         function get (key) {
-            var json = localStorage.getItem(key);
+            var json = storage.getItem(key);
             return json && angular.fromJson(json);
         }
 
@@ -208,4 +209,4 @@
         };
     }]);
 
-}(angular.module("app.module.main")));
+}(angular.module("main")));

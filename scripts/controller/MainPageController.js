@@ -8,7 +8,7 @@
         this.date = new Date().toJSON();
     }
 
-    module.controller("mainPageController", ["$scope", "$route", "$routeParams", "noteModel", function ($scope, $route, $routeParams, model) {
+    module.controller("MainPageController", ["$scope", "$route", "$routeParams", "noteModel", function ($scope, $route, $routeParams, model) {
 
         $scope.data = model.getData();
 
@@ -84,4 +84,4 @@
 
     }]);
 
-}(angular.module("app.module.main")));
+}(angular.module("main")));

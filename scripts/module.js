@@ -3,11 +3,13 @@
 
     module.constant("storageKey", "de.udos.notes");
 
-    module.config(["$routeProvider", function ($routeProvider) {
+    module.config(["$logProvider", "$routeProvider", function ($logProvider, $routeProvider) {
+
+        $logProvider.debugEnabled(DEBUG); // DEBUG globally defined in uglify grunt task
 
         $routeProvider.when("/notes/:noteId", {
                 templateUrl: "partials/noteView.html",
-                controller: "noteViewController"
+                controller: "NoteViewController"
             }).
             otherwise({
                 redirectTo: "/"
@@ -16,13 +18,7 @@
 
     module.run(["$log", function ($log) {
 
-        if (window.localStorage === undefined || window.localStorage === null) {
-            throw "No local storage available.";
-        }
-
-        if (DEBUG) {
-            $log.debug("Module Main is running...");
-        }
+        $log.debug("Module Main is running...");
     }]);
 
-}(angular.module("app.module.main", ["ngRoute"])));
+}(angular.module("main", ["ngRoute"])));

@@ -3,25 +3,23 @@
 
     module.factory("noteModel", ["localStorage", "storageKey", function (localStorage, storageKey) {
 
-        var self = this;
-
-        self.data = localStorage.read(storageKey);
+        var data = localStorage.read(storageKey);
 
         return {
 
             getData: function () {
-                return self.data.slice();
+                return data.slice();
             },
 
             getItem: function (field, value) {
 
-                var l = self.data.length,
+                var l = data.length,
                     item = null,
                     curr,
                     i;
 
                 for (i = 0; i < l; i += 1) {
-                    curr = self.data[i];
+                    curr = data[i];
 
                     if (curr[field] === value) {
                         item = curr;
@@ -33,20 +31,20 @@
 
             add: function (item) {
 
-                self.data.push(item);
-                localStorage.write(storageKey, self.data);
+                data.push(item);
+                localStorage.write(storageKey, data);
 
-                return self.data.slice();
+                return data.slice();
             },
 
             remove: function (item) {
 
-                self.data.splice(self.data.indexOf(item), 1);
-                localStorage.write(storageKey, self.data);
+                data.splice(data.indexOf(item), 1);
+                localStorage.write(storageKey, data);
 
-                return self.data.slice();
+                return data.slice();
             }
         };
     }]);
 
-}(angular.module("app.module.main")));
+}(angular.module("main")));
