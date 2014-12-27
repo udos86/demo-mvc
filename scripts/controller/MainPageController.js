@@ -1,7 +1,7 @@
 (function (module) {
     "use strict";
 
-    module.controller("MainPageController", ["$scope", "$route", "noteFactory", "noteModel", function ($scope, $route, Note, model) {
+    module.controller("MainPageController", ["$scope", "$route", "NoteFactory", "noteModel", function ($scope, $route, Note, model) {
 
         $scope.data = model.getData();
 
@@ -41,7 +41,7 @@
              var self = $scope; //this.$parent
 
              if (note) {
-             self.selectedNote = note;
+                self.selectedNote = note;
              }
              */
         };

@@ -1,7 +1,7 @@
 (function (module) {
     "use strict";
 
-    module.factory("noteFactory", [function () {
+    module.factory("NoteFactory", [function () {
 
         function Note(title, text) {
 
