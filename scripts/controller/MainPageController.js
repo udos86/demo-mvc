@@ -1,78 +1,79 @@
 (function (module) {
     "use strict";
 
-    module.controller("MainPageController", ["$scope", "$route", "NoteFactory", "noteModel", function ($scope, $route, Note, model) {
+    module.controller("MainPageController", ["$scope", "$route", "NoteFactory", "noteModel",
+        function ($scope, $route, Note, model) {
 
-        $scope.data = model.getData();
+            $scope.data = model.getData();
 
-        $scope.selectedNote = null;
+            $scope.selectedNote = null;dc
 
-        $scope.noteFormTitle = "";
+            $scope.noteFormTitle = "";
 
-        $scope.noteFormText = "";
+            $scope.noteFormText = "";
 
-        $scope.noteOrderField = "-date";
+            $scope.noteOrderField = "-date";
 
-        $scope.createNote = function () {
+            $scope.createNote = function () {
 
-            var self = this,
-                note = Note.create(self.noteFormTitle, self.noteFormText);
+                var self = this,
+                    note = Note.create(self.noteFormTitle, self.noteFormText);
 
-            self.data = model.add(note);
-            $route.updateParams({"noteId": note.date});
-        };
+                self.data = model.add(note);
+                $route.updateParams({"noteId": note.date});
+            };
 
-        $scope.deleteNote = function () {
+            $scope.deleteNote = function () {
 
-            var self = this;
+                var self = this;
 
-            if ($scope.selectedNote) {
+                if ($scope.selectedNote) {
 
-                self.data = model.remove($scope.selectedNote);
-                $route.updateParams({"noteId": null});
-            }
-        };
+                    self.data = model.remove($scope.selectedNote);
+                    $route.updateParams({"noteId": null});
+                }
+            };
 
-        $scope.showNote = function (/*note*/) {
+            $scope.showNote = function (/*note*/) {
 
-            $("#panelArchive").panel("close");
+                $("#panelArchive").panel("close");
 
-            /*
-             var self = $scope; //this.$parent
+                /*
+                 var self = $scope; //this.$parent
 
-             if (note) {
-                self.selectedNote = note;
-             }
-             */
-        };
+                 if (note) {
+                    self.selectedNote = note;
+                 }
+                 */
+            };
 
-        $scope.openPopup = function ($event) {
+            $scope.openPopup = function ($event) {
 
-            var popId;
+                var popId;
 
-            switch ($event.currentTarget.id) {
+                switch ($event.currentTarget.id) {
 
-                case "btnNoteForm":
-                    popId = "popupNoteForm";
-                    break;
+                    case "btnNoteForm":
+                        popId = "popupNoteForm";
+                        break;
 
-                case "btnDeleteNote":
-                    popId = "popupNoteDelete";
-                    break;
-            }
+                    case "btnDeleteNote":
+                        popId = "popupNoteDelete";
+                        break;
+                }
 
-            $("#" + popId).popup("open", {
+                $("#" + popId).popup("open", {
 
-                positionTo: "window",
-                transition: "pop"
+                    positionTo: "window",
+                    transition: "pop"
+                });
+            };
+
+            $scope.$on("onNoteSelected", function (evt, data) {
+
+                $scope.selectedNote = data;
             });
-        };
 
-        $scope.$on("onNoteSelected", function (evt, data) {
-
-            $scope.selectedNote = data;
-        });
-
-    }]);
+        }]);
 
 }(angular.module("main")));
