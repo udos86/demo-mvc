@@ -5,7 +5,7 @@
 
     module.config(["$logProvider", "$routeProvider", function ($logProvider, $routeProvider) {
 
-        $logProvider.debugEnabled(DEBUG); // DEBUG globally defined in uglify grunt task
+        $logProvider.debugEnabled(true); // im produktiven Einsatz deaktivieren
 
         $routeProvider.when("/notes/:noteId", {
                 templateUrl: "partials/noteView.html",

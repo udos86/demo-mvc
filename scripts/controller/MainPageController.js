@@ -1,12 +1,12 @@
 (function (module) {
     "use strict";
 
-    module.controller("MainPageController", ["$scope", "$route", "NoteFactory", "noteModel",
-        function ($scope, $route, Note, model) {
+    module.controller("MainPageController", ["$scope", "$location", "$route", "NoteFactory", "noteModel",
+        function ($scope, $location, $route, Note, model) {
 
             $scope.data = model.getData();
 
-            $scope.selectedNote = null;dc
+            $scope.selectedNote = null;
 
             $scope.noteFormTitle = "";
 
@@ -20,7 +20,13 @@
                     note = Note.create(self.noteFormTitle, self.noteFormText);
 
                 self.data = model.add(note);
-                $route.updateParams({"noteId": note.date});
+
+                if ($location.path() === "/") {
+                    $location.url("/notes/" + note.date);
+
+                } else {
+                    $route.updateParams({"noteId": note.date});
+                }
             };
 
             $scope.deleteNote = function () {

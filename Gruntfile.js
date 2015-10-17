@@ -56,14 +56,6 @@ module.exports = function (grunt) {
 
             dist: {
 
-                options: {
-                    compress: {
-                        global_defs: {
-                            DEBUG: false
-                        }
-                    }
-                },
-
                 files: [{
 
                     expand: true,

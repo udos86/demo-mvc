@@ -5,7 +5,7 @@
 
     module.config(["$logProvider", "$routeProvider", function ($logProvider, $routeProvider) {
 
-        $logProvider.debugEnabled(DEBUG); // DEBUG globally defined in uglify grunt task
+        $logProvider.debugEnabled(true); // im produktiven Einsatz deaktivieren
 
         $routeProvider.when("/notes/:noteId", {
                 templateUrl: "partials/noteView.html",
@@ -26,143 +26,152 @@
 (function (module) {
     "use strict";
 
-    module.controller("MainPageController", ["$scope", "$route", "noteFactory", "noteModel", function ($scope, $route, Note, model) {
+    module.controller("MainPageController", ["$scope", "$location", "$route", "NoteFactory", "noteModel",
+        function ($scope, $location, $route, Note, model) {
 
-        $scope.data = model.getData();
+            $scope.data = model.getData();
 
-        $scope.selectedNote = null;
+            $scope.selectedNote = null;
 
-        $scope.noteFormTitle = "";
+            $scope.noteFormTitle = "";
 
-        $scope.noteFormText = "";
+            $scope.noteFormText = "";
 
-        $scope.noteOrderField = "-date";
+            $scope.noteOrderField = "-date";
 
-        $scope.createNote = function () {
+            $scope.createNote = function () {
 
-            var self = this,
-                note = Note.create(self.noteFormTitle, self.noteFormText);
+                var self = this,
+                    note = Note.create(self.noteFormTitle, self.noteFormText);
 
-            self.data = model.add(note);
-            $route.updateParams({"noteId": note.date});
-        };
+                self.data = model.add(note);
 
-        $scope.deleteNote = function () {
+                if ($location.path() === "/") {
+                    $location.url("/notes/" + note.date);
 
-            var self = this;
+                } else {
+                    $route.updateParams({"noteId": note.date});
+                }
+            };
 
-            if ($scope.selectedNote) {
+            $scope.deleteNote = function () {
 
-                self.data = model.remove($scope.selectedNote);
-                $route.updateParams({"noteId": null});
-            }
-        };
+                var self = this;
 
-        $scope.showNote = function (/*note*/) {
+                if ($scope.selectedNote) {
 
-            $("#panelArchive").panel("close");
+                    self.data = model.remove($scope.selectedNote);
+                    $route.updateParams({"noteId": null});
+                }
+            };
 
-            /*
-             var self = $scope; //this.$parent
+            $scope.showNote = function (/*note*/) {
 
-             if (note) {
-             self.selectedNote = note;
-             }
-             */
-        };
+                $("#panelArchive").panel("close");
 
-        $scope.openPopup = function ($event) {
+                /*
+                 var self = $scope; //this.$parent
 
-            var popId;
+                 if (note) {
+                    self.selectedNote = note;
+                 }
+                 */
+            };
 
-            switch ($event.currentTarget.id) {
+            $scope.openPopup = function ($event) {
 
-                case "btnNoteForm":
-                    popId = "popupNoteForm";
-                    break;
+                var popId;
 
-                case "btnDeleteNote":
-                    popId = "popupNoteDelete";
-                    break;
-            }
+                switch ($event.currentTarget.id) {
 
-            $("#" + popId).popup("open", {
-
-                positionTo: "window",
-                transition: "pop"
-            });
-        };
-
-        $scope.$on("onNoteSelected", function (evt, data) {
-
-            $scope.selectedNote = data;
-        });
-
-    }]);
-
-}(angular.module("main")));
-
-(function (module) {
-    "use strict";
-
-    module.controller("NoteViewController", ["$scope", "$routeParams", "noteModel", function ($scope, $routeParams, model) {
-
-        $scope.note = model.getItem("date", $routeParams.noteId);
-
-        $scope.$emit("onNoteSelected", $scope.note);
-    }]);
-
-}(angular.module("main")));
-
-(function (module) {
-    "use strict";
-
-    module.factory("noteModel", ["localStorage", "storageKey", function (localStorage, storageKey) {
-
-        var data = localStorage.read(storageKey);
-
-        return {
-
-            getData: function () {
-                return data.slice();
-            },
-
-            getItem: function (field, value) {
-
-                var l = data.length,
-                    item = null,
-                    curr,
-                    i;
-
-                for (i = 0; i < l; i += 1) {
-                    curr = data[i];
-
-                    if (curr[field] === value) {
-                        item = curr;
+                    case "btnNoteForm":
+                        popId = "popupNoteForm";
                         break;
-                    }
+
+                    case "btnDeleteNote":
+                        popId = "popupNoteDelete";
+                        break;
                 }
 
-                return item;
-            },
+                $("#" + popId).popup("open", {
 
-            add: function (item) {
+                    positionTo: "window",
+                    transition: "pop"
+                });
+            };
 
-                data.push(item);
-                localStorage.write(storageKey, data);
+            $scope.$on("onNoteSelected", function (evt, data) {
 
-                return data.slice();
-            },
+                $scope.selectedNote = data;
+            });
 
-            remove: function (item) {
+        }]);
 
-                data.splice(data.indexOf(item), 1);
-                localStorage.write(storageKey, data);
+}(angular.module("main")));
 
-                return data.slice();
-            }
-        };
-    }]);
+(function (module) {
+    "use strict";
+
+    module.controller("NoteViewController", ["$scope", "$routeParams", "noteModel",
+        function ($scope, $routeParams, model) {
+
+            $scope.note = model.getItem("date", $routeParams.noteId);
+
+            $scope.$emit("onNoteSelected", $scope.note);
+        }]);
+
+}(angular.module("main")));
+
+(function (module) {
+    "use strict";
+
+    module.factory("noteModel", ["localStorage", "storageKey",
+        function (localStorage, storageKey) {
+
+            var data = localStorage.read(storageKey);
+
+            return {
+
+                getData: function () {
+                    return data.slice();
+                },
+
+                getItem: function (field, value) {
+
+                    var l = data.length,
+                        item = null,
+                        curr,
+                        i;
+
+                    for (i = 0; i < l; i += 1) {
+                        curr = data[i];
+
+                        if (curr[field] === value) {
+                            item = curr;
+                            break;
+                        }
+                    }
+
+                    return item;
+                },
+
+                add: function (item) {
+
+                    data.push(item);
+                    localStorage.write(storageKey, data);
+
+                    return data.slice();
+                },
+
+                remove: function (item) {
+
+                    data.splice(data.indexOf(item), 1);
+                    localStorage.write(storageKey, data);
+
+                    return data.slice();
+                }
+            };
+        }]);
 
 }(angular.module("main")));
 
@@ -206,7 +215,7 @@
 (function (module) {
     "use strict";
 
-    module.factory("noteFactory", [function () {
+    module.factory("NoteFactory", [function () {
 
         function Note(title, text) {
 
